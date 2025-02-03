@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:latest
-    container_name: mysql-container
+    container_name: mysql-server
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: demo
@@ -11,6 +11,18 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+
+  springboot-app:
+    image: springboot-thymeleaf-web-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    container_name: springboot-app
+    restart: unless-stopped
+    depends_on:
+      - mysql
 
 volumes:
   mysql-data:
